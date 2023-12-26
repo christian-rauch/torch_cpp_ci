@@ -6,6 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      DEBIAN_FRONTEND: noninteractive
+
     container:
       image: ubuntu:22.04
       volumes:
@@ -23,15 +26,20 @@ jobs:
     - name: install dependencies
       run: |
         apt update
-        apt install -y python3-bloom python3-rosdep dpkg-dev debhelper fakeroot
+        apt install -y python3-bloom python3-rosdep dpkg-dev debhelper devscripts equivs fakeroot
         rm /etc/ros/rosdep/sources.list.d/20-default.list
         rosdep init
         rosdep update
 
     # https://gist.github.com/awesomebytes/196eab972a94dd8fcdd69adfe3bd1152
-    - name: create debian package
+    - name: set up debian package
       run: |
         bloom-generate rosdebian --ros-distro humble
+        mk-build-deps
+        apt install -y ./ros-*-build-deps*.deb
+
+    - name: build debian package
+      run: |
         fakeroot debian/rules binary
 
     - name: check free space
