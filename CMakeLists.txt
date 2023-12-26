@@ -12,7 +12,9 @@ ExternalProject_Add(torch_archive
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
-  PATCH_COMMAND     find lib -type f -name "*.so*" -o -name "*.a" |  xargs -i strip --strip-all {}
+#   PATCH_COMMAND     find lib -type f -name "*.so*" -o -name "*.a" |  xargs -i strip --strip-all {}
+  PATCH_COMMAND
+    strip --strip-debug lib/libtorch_global_deps.so lib/libcaffe2_nvrtc.so lib/libtorch_cuda_linalg.so lib/libtorch_python.so lib/libtorch_cpu.so lib/libnvfuser_codegen.so lib/libc10d_cuda_test.so lib/libtorch_cuda.so
 )
 
 ExternalProject_Get_Property(torch_archive SOURCE_DIR)
