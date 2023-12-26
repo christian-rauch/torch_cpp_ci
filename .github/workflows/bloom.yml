@@ -37,6 +37,7 @@ jobs:
         bloom-generate rosdebian --ros-distro humble
         mk-build-deps
         apt install -y ./ros-*-build-deps*.deb
+        apt install -y libnvidia-compute-525
 
     - name: build debian package
       run: |
