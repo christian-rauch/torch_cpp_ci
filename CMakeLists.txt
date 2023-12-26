@@ -12,6 +12,7 @@ ExternalProject_Add(torch_archive
   CONFIGURE_COMMAND ""
   BUILD_COMMAND     ""
   INSTALL_COMMAND   ""
+  PATCH_COMMAND     find lib -type f -name "*.so*" -o -name "*.a" |  xargs -i strip --strip-all {}
 )
 
 ExternalProject_Get_Property(torch_archive SOURCE_DIR)
